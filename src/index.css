@@ -34,6 +34,7 @@ ol, ul {
 
 .square:focus {
     outline: none;
+    background: #999;
 }
 
 .square:hover {

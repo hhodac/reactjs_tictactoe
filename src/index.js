@@ -88,6 +88,7 @@ class Game extends React.Component {
         this.state = {
             history: [{
                 squares: Array(9).fill(null),
+                coors: [null],
             }],
             xIsNext: true,
             stepNumber: 0,
@@ -98,6 +99,11 @@ class Game extends React.Component {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
+
+        const row = Math.floor(i / 3);
+        const col = i % 3;
+        current.coors[this.state.stepNumber + 1] = [col, row];
+
         if (calculateWinner(squares) || squares[i]) {
             return;
         }
@@ -105,6 +111,7 @@ class Game extends React.Component {
         this.setState({
             history: history.concat([{
                 squares: squares,
+                coors: current.coors,
             }]),
             stepNumber: history.length,
             xIsNext: !this.state.xIsNext,
@@ -119,17 +126,27 @@ class Game extends React.Component {
     }
 
     render() {
+        const active = {
+            fontWeight: 'bold',
+        };
+        const inactive = {
+            fontWeight: 'normal',
+        };
+
         const history = this.state.history;
         const current = history[this.state.stepNumber];
         const winner = calculateWinner(current.squares);
 
         const moves = history.map((step, move) => {
             const desc = move ?
-                'Go to move #' + move :
+                'Go to move #' + move + " (" + step.coors[move] + ")":
                 'Go to game start';
             return (
-                <li key={move}>
-                    <button onClick={() => this.jumpTo(move)}>
+                <li className="move-list" key={move}>
+                    <button 
+                        onClick={() => this.jumpTo(move)}
+                        style={this.state.stepNumber === move ? active : inactive}
+                    >
                         {desc}
                     </button>
                 </li>
