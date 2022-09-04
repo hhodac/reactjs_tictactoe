@@ -29,10 +29,15 @@ ol, ul {
     padding: 0;
     text-align: center;
     width: 34px;
+    transition-duration: 0.2s;
 }
 
 .square:focus {
     outline: none;
+}
+
+.square:hover {
+    background: #999;
 }
 
 .kdb-navigation .square:focus {
